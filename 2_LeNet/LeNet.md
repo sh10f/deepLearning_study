@@ -166,3 +166,6 @@ class LeNet(nn.Module):
 
     
 
+### Early Stopping
+
+<img src=".\imgs_log\loss_earlystop.svg"  width=70%>
