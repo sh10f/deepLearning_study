@@ -210,7 +210,7 @@ def trainning_now(train_set, val_set):
 if __name__ == '__main__':
 
     # load Custom dataset
-    path = r'.\\data\\BANK'
+    path = r'..\\DataSets\\BANK'
 
     train_set = CustomDataset(root=path, train=True)
     val_set = CustomDataset(root=path, train=False)

@@ -239,13 +239,13 @@ def trainning_now(train_set, val_set):
 if __name__ == '__main__':
     # load MINIST dataset
     # transform = transforms.Compose([transforms.ToTensor()])
-    # train_set = datasets.MNIST(root='./data', train=True, download=True, transform=transform)
-    # val_set = datasets.MNIST(root='./data', train=False, download=True, transform=transform)
+    # train_set = datasets.MNIST(root='../DataSets', train=True, download=True, transform=transform)
+    # val_set = datasets.MNIST(root='../DataSets', train=False, download=True, transform=transform)
     # minist_train = DataLoader(dataset=train_set, batch_size=64, shuffle=True)
     # minist_val = DataLoader(dataset=val_set, batch_size=64, shuffle=True)
 
     # load Custom dataset
-    path = r'.\\data\\BANK'
+    path = r'..\\DataSets\\BANK'
 
     train_set = CustomDataset(root=path, train=True)
     val_set = CustomDataset(root=path, train=False)
