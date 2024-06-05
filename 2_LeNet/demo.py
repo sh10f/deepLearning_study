@@ -71,7 +71,13 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 epochs = 50
 lr = 0.001
 
-writer = SummaryWriter(r'runs\\minist_test')
+# Early Stopping Parameters
+early_stopping_count = 0
+best_val_loss = 1e10
+patience = 10
+
+
+writer = SummaryWriter(r'runs\\minist_EarlyStop')
 model = LeNet().to(device)
 loss_fn = nn.CrossEntropyLoss()
 optim = optimizer.Adam(model.parameters(), lr=lr)
@@ -108,14 +114,27 @@ for epoch in range(epochs):
             _, predicted = torch.max(output, 1)  # 返回 最大值 和 index
             correct += predicted.eq(target).sum().item()
 
+        avg_val_loss = val_loss / len(validloader)
         val_accuracy = correct / len(validloader) / batch_size
-        print("Validation Epoch {} Loss: {}, Accuracy: {}\n".format(epoch, val_loss / len(validloader), val_accuracy))
+        print("Validation Epoch {} Loss: {}, Accuracy: {}\n".format(epoch, avg_val_loss, val_accuracy))
         writer.add_scalars('val',
                            {"val_loss": val_loss, "val_accuracy": val_accuracy}, epoch)
 
         writer.add_scalars("train & loss",
-                           {"train_loss": total_loss / len(trainloader), "val_loss": val_loss / len(validloader)},
+                           {"train_loss": total_loss / len(trainloader), "val_loss": avg_val_loss},
                            epoch)
+
+        # add Early Stopping
+        if avg_val_loss < best_val_loss:
+            best_val_loss = avg_val_loss
+            early_stopping_count = 0
+            torch.save(model.state_dict(), 'best_model.pth')
+        else:
+            early_stopping_count += 1
+            if early_stopping_count >= patience:
+                print("Early stopping")
+                break
+
 
 print("training finished")
 writer.close()
