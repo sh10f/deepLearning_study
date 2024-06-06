@@ -39,19 +39,20 @@ class LeNet(nn.Module):
 
     def forward(self, x):
         x = self.conv1(x)
+        x = self.relu(x)
         x = self.pooling1(x)
+
         x = self.conv2(x)
+        x = self.relu(x)
         x = self.pooling2(x)
 
         x = torch.flatten(x, start_dim=1)
 
         x = self.fc1(x)
         x = torch.relu(x)
-        x = self.dropout(x)
 
         x = self.fc2(x)
         x = torch.relu(x)
-        x = self.dropout(x)
 
         x = self.fc3(x)
 
@@ -77,7 +78,7 @@ best_val_loss = 1e10
 patience = 10
 
 
-writer = SummaryWriter(r'runs\\minist_EarlyStop')
+writer = SummaryWriter(r'runs\\minist_test')
 model = LeNet().to(device)
 loss_fn = nn.CrossEntropyLoss()
 optim = optimizer.Adam(model.parameters(), lr=lr)
@@ -128,7 +129,7 @@ for epoch in range(epochs):
         if avg_val_loss < best_val_loss:
             best_val_loss = avg_val_loss
             early_stopping_count = 0
-            torch.save(model.state_dict(), 'best_model.pth')
+            torch.save(model.state_dict(), 'best_model_test.pth')
         else:
             early_stopping_count += 1
             if early_stopping_count >= patience:

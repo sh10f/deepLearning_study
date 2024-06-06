@@ -69,7 +69,7 @@ class LeNet(nn.Module):
 
 
 
-# 训练
+# MINIST训练
 
 ## 第二轮训练
 
@@ -169,3 +169,10 @@ class LeNet(nn.Module):
 ### Early Stopping
 
 <img src=".\imgs_log\loss_earlystop.svg"  width=70%>
+
+
+
+
+
+# 股票价格走势预测
+
